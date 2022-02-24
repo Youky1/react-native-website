@@ -212,7 +212,7 @@ Animated.timing(opacity, {
 
 [`Animated.event`](animated#event)是 Animated 中与输入有关的部分，允许手势或其它事件直接绑定到动态值上。它通过一个结构化的映射语法来完成，使得复杂事件对象中的值可以被正确的解开。第一层是一个数组，允许同时映射多个值，然后数组的每一个元素是一个嵌套的对象。在下面的例子里，你可以发现`scrollX`被映射到了`event.nativeEvent.contentOffset.x`(`event`通常是回调函数的第一个参数)，并且`pan.x`和`pan.y`分别映射到`gestureState.dx`和`gestureState.dy`（`gestureState`是传递给`PanResponder`回调函数的第二个参数）。
 
-例如，在使用水平的滚动手势时，你可以想下面这样做来将 `event.nativeEvent.contentOffset.x` 映射到 `scrollX` (一个 `Animated.Value`)：
+例如，在使用水平的滚动手势时，可以像下面这样将 `event.nativeEvent.contentOffset.x` 映射到 `scrollX` (一个 `Animated.Value`)：
 
 ```jsx
  onScroll={Animated.event(
@@ -226,7 +226,7 @@ Animated.timing(opacity, {
  )}
 ```
 
-下面的例子实现一个水平滚动轮播，其中滚动位置指示器使用 `ScrollView` 中使用的 `Animated.event` 进行动画处理
+下面的例子实现一个水平滚动轮播，其中滚动位置指示器使用 `ScrollView` 中用到的 `Animated.event` 进行动画处理
 
 #### 在`ScrollView`中使用动画事件的示例
 
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
 </TabItem>
 </Tabs>
 
-在使用 `PanResponder` 时， 你可以用下面的代码来从 `gestureState.dx` 和 `gestureState.dy`中获取 x 和 y 。我们在数组的第一个元素使用一个 `null` ，因为我们只对传递给 `PanResponder` 处理程序的第二个参数感兴趣，也就是 `gestureState`。
+在使用 `PanResponder` 时， 可以用下面的代码来从 `gestureState.dx` 和 `gestureState.dy`中获取 x 和 y 。我们在数组的第一个元素使用一个 `null` ，因为我们只对传递给 `PanResponder` 处理程序的第二个参数感兴趣，也就是 `gestureState`。
 
 ```jsx
 onPanResponderMove={Animated.event(
@@ -655,7 +655,9 @@ const styles = StyleSheet.create({
 - `spring.stopAnimation(callback)`会停止动画并且把最终的值作为参数传递给回调函数`callback`——这在处理手势动画的时候非常有用。
 - `spring.addListener(callback)`会在动画的执行过程中持续异步调用`callback`回调函数，提供一个最近的值作为参数。这在用于触发状态切换的时候非常有用，譬如当用户拖拽一个东西靠近的时候弹出一个新的气泡选项。不过这个状态切换可能并不会十分灵敏，因为它不像许多连续手势操作（如旋转）那样在 60fps 下运行。
 
-`Animated` 被设计为完全可序列化的，因此动画可以以高性能方式运行，独立于正常的 JavaScript 事件循环。这确实会影响 API，因此与完全同步的系统相比，当做某事看起来有点棘手时，请记住这一点。查看 `Animated.Value.addListener` 作为解决其中一些限制的一种方法，但要谨慎使用它，因为它可能会影响未来的性能。
+`Animated` 被设计为完全可序列化的，因此动画可以以高性能的方式运行，独立于正常的 JavaScript 事件循环。这确实会影响 API 的一些设计，因此与完全同步的系统相比，做某些需求可能看起来会有些棘手。`Animated.Value.addListener` 可能可以用来解决一些场景问题，但要谨慎使用它，因为它可能带来一些性能上的影响。
+
+> 注：社区有另一个设计思路不太一样的高性能动画库 [`react-native-reanimated`](https://github.com/software-mansion/react-native-reanimated)，对性能有更高要求的开发者可以参考一下。
 
 ### 启用原生动画驱动
 
